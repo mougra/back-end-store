@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  email      String   @unique
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  email      String    @unique
   password   String
-  name       String   @unique
-  avatarPath String   @default("/uploads/default-avatar.png") @map("avatar_path")
-  phone      String   @default("")
+  name       String    @unique
+  avatarPath String    @default("/uploads/default-avatar.png") @map("avatar_path")
+  phone      String    @default("")
   orders     Order[]
-  rewiews    Rewiew[]
+  reviews    Review[]
+  favorites  Product[]
 }
 
 model Product {
@@ -34,10 +35,12 @@ model Product {
   price       Int
   images      String[]
   orderItems  OrderItem[]
-  rewiews     Rewiew[]
+  reviews     Review[]
 
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?      @map("category_id")
+  user       User?     @relation(fields: [userId], references: [id])
+  userId     Int?      @map("user_id")
 }
 
 model Category {
@@ -46,16 +49,17 @@ model Category {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   name String @unique
+  slug String @unique
 
   products Product[]
 }
 
-model Rewiew {
+model Review {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  rating String
+  rating Int
   text   String
 
   user   User @relation(fields: [userId], references: [id])
