@@ -18,7 +18,6 @@ export class ProductService {
   ) {}
 
   async getAll(dto: GetAllProductDto = {}) {
-    //  {}
     const { sort, searchTerm } = dto;
 
     const prismaSort: Prisma.ProductOrderByWithRelationInput[] = [];
